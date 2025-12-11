@@ -1,0 +1,2 @@
+Case_ID,Player_ID,Activity,Timestamp,Category,Question_Value,Answer_Given,Result,Score_After_Play
+1,IntegrationPlayer,Integration Test,2025-11-25 00:46:15,Test Category,100,A,CORRECT,100
