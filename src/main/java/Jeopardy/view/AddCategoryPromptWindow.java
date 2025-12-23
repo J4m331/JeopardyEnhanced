@@ -2,6 +2,7 @@ package Jeopardy.view;
 
 import javax.swing.*;
 
+import Jeopardy.model.Category;
 import Jeopardy.model.Player;
 import Jeopardy.observer.LogEvent;
 import Jeopardy.observer.LogObserver;
@@ -14,14 +15,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddPlayersPromptWindow implements LogSubject{
+public class AddCategoryPromptWindow implements LogSubject{
     private JDialog dialog;
-    private List<Player> players;
+    private List<Category> categories;
     private LogObserver eventLogger;
 
-    public AddPlayersPromptWindow(Observer o){
+    public AddCategoryPromptWindow(Observer o){
         LinkObserver(o);
-        players = new ArrayList<Player>();
+        categories = new ArrayList<Category>();
         //frame to hold dialog
         JFrame frame = new JFrame();
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,6 +34,7 @@ public class AddPlayersPromptWindow implements LogSubject{
         dialog.setLayout(new GridLayout(3,1));
         dialog.setLocationRelativeTo(null);
 
+        /*
         dialog.add(new JLabel("How much players are playing?"));
         Choice playerCount = new Choice();
         playerCount.add("1");
@@ -45,18 +47,18 @@ public class AddPlayersPromptWindow implements LogSubject{
         playerCount.add("8");
         playerCount.add("9");
         playerCount.add("10");
-        dialog.add(playerCount);
+        dialog.add(playerCount);*/
 
         JButton submit = new JButton("Submit");
         submit.addActionListener(e -> {
-            int count = playerCount.getSelectedIndex() + 1;
+            int count = 5;
             LogEvent addPlayersEvent = new LogEvent.Builder()
                     .playerName("System")
                     .activity("Select Player Count")
                     .answerGiven(count+"")
                     .build();
             UpdateLogObserver(addPlayersEvent);
-            createPlayers(count); //Creates players depending on the number of players selected
+            createCategories(count);
         });
 
         dialog.add(submit);
@@ -64,18 +66,18 @@ public class AddPlayersPromptWindow implements LogSubject{
         dialog.setVisible(true);
     }
 
-    public void createPlayers(int playerCount){
-        for(int i = 0; i< playerCount;i++){
-            CreatePlayerPromptWindow createPlayerWindow = new CreatePlayerPromptWindow(i, eventLogger);
-            createPlayerWindow.LinkObserver(eventLogger);
-            Player player = createPlayerWindow.getPlayer();
-            players.add(player);
+    public void createCategories(int categoryCount){
+        for(int i = 0; i< categoryCount;i++){
+            CreateCategoryPromptWindow createCategoryWindow = new CreateCategoryPromptWindow(eventLogger);
+            createCategoryWindow.LinkObserver(eventLogger);
+            Category category = createCategoryWindow.getCategory();
+            categories.add(category);
         }
         this.dialog.dispose();
     }
 
-    public List<Player> getPlayers(){
-        return this.players;
+    public List<Category> getCategories(){
+        return this.categories;
     }
 
     @Override
